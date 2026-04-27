@@ -1,0 +1,180 @@
+:root {
+  /* Branding */
+  --primary: #3D57C7;
+  --secondary: #005E5C;
+  --accent: #ABC94A;
+  --soft: #C2ADFF;
+
+  /* UX semántico */
+  --success: #2e7d32;
+  --warning: #f9a825;
+  --danger: #c62828;
+
+  /* Base */
+  --bg: #f4f6fb;
+  --text: #1c1c1c;
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Base */
+body {
+  font-family: 'Sora', sans-serif;
+  background: var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Contenedor */
+.container {
+  text-align: center;
+}
+
+/* Card */
+.card {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  width: 360px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  border-top: 6px solid var(--primary);
+}
+
+/* Título estado */
+.state {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+/* Subtítulo */
+.subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Acciones */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Botones base */
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Branding */
+.primary {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.secondary {
+  background: var(--secondary);
+  color: #ffffff;
+}
+
+/* Decisiones UX */
+.success {
+  background: var(--success);
+  color: #ffffff;
+}
+
+.warning {
+  background: var(--warning);
+  color: #1c1c1c;
+}
+
+.danger {
+  background: var(--danger);
+  color: #ffffff;
+}
+
+/* Hover */
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Animaciones */
+.fade-out {
+  opacity: 0;
+  transform: scale(0.92);
+}
+
+.fade-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Chips (pantalla bienvenida) */
+.states-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.chip {
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Colores de chips */
+.chip.primary {
+  background: var(--primary);
+  color: white;
+}
+
+.chip.secondary {
+  background: var(--secondary);
+  color: white;
+}
+
+.chip.success {
+  background: var(--success);
+  color: white;
+}
+
+.chip.warning {
+  background: var(--warning);
+  color: #1c1c1c;
+}
+
+.chip.danger {
+  background: var(--danger);
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .card {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .state {
+    font-size: 20px;
+  }
+}
