@@ -178,3 +178,41 @@ button:hover {
     font-size: 20px;
   }
 }
+/* Mobile-first mejoras */
+
+body {
+  height: auto;
+  min-height: 100vh;
+  padding: 20px;
+  align-items: flex-start;
+}
+
+/* Card más flexible */
+.card {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* Botones táctiles */
+button {
+  min-height: 48px;
+  font-size: 14px;
+}
+
+/* Chips más legibles */
+.chip {
+  font-size: 12px;
+  padding: 8px 12px;
+}
+
+/* Mejor espaciado en mobile */
+.actions {
+  gap: 12px;
+}
+
+/* Evita que se corte contenido */
+.container {
+  width: 100%;
+  max-width: 480px;
+}
