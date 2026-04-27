@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Simulador Proceso de Venta</title>
+
+<!-- Fuente Sora -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<!-- CSS -->
+<link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+
+<div class="container">
+  <div id="card" class="card fade-in">
+    <div class="state" id="stateText"></div>
+    <div class="subtitle" id="subtitle"></div>
+    <div class="actions" id="actions"></div>
+  </div>
+</div>
+
+<script>
+
+let currentState = "BIENVENIDA";
+
+function render() {
+
+  const stateText = document.getElementById("stateText");
+  const subtitle = document.getElementById("subtitle");
+  const actions = document.getElementById("actions");
+
+  actions.innerHTML = "";
+
+  /* BIENVENIDA */
+  if (currentState === "BIENVENIDA") {
+    stateText.innerText = "Simulador de Proceso de Venta";
+    subtitle.innerText = "Conocé los estados posibles antes de comenzar";
+
+    actions.innerHTML = `
+      <div class="states-list">
+        <span class="chip primary">Precarga</span>
+        <span class="chip secondary">Enviada</span>
+        <span class="chip warning">Auditoría</span>
+        <span class="chip success">Cargada</span>
+        <span class="chip primary">A Confirmar</span>
+        <span class="chip success">Importada</span>
+        <span class="chip warning">Requerida</span>
+        <span class="chip warning">Observada</span>
+        <span class="chip danger">Rechazada</span>
+      </div>
+
+      <button class="primary" onclick="move('INICIO')">Iniciar</button>
+    `;
+  }
+
+  /* INICIO */
+  else if (currentState === "INICIO") {
+    stateText.innerText = "¿Quién completa la solicitud?";
+    subtitle.innerText = "";
+
+    actions.innerHTML = `
+      <button class="primary" onclick="move('PRECARGA')">Asesor</button>
+      <button class="secondary" onclick="move('ENVIADA')">Prospecto (enviar link)</button>
+    `;
+  }
+
+  /* PRECARGA */
+  else if (currentState === "PRECARGA") {
+    stateText.innerText = "Estado: PRECARGA";
+    subtitle.innerText = "El asesor completó la ficha. El sistema validará";
+
+    actions.innerHTML = `
+      <button class="success" onclick="validate(true)">DDJJ correcta</button>
+      <button class="warning" onclick="validate(false)">DDJJ con salvedades</button>
+    `;
+  }
+
+  /* ENVIADA */
+  else if (currentState === "ENVIADA") {
+    stateText.innerText = "Estado: ENVIADA";
+    subtitle.innerText = "El prospecto completó la ficha. El sistema validará:";
+
+    actions.innerHTML = `
+      <button class="success" onclick="validate(true)">DDJJ correcta</button>
+      <button class="warning" onclick="validate(false)">DDJJ con salvedades</button>
+    `;
+  }
+
+  /* AUDITORIA */
+  else if (currentState === "AUDITORIA") {
+    stateText.innerText = "Estado: AUDITORÍA";
+    subtitle.innerText = "El auditor revisa la DDJJ y resuelve:";
+
+    actions.innerHTML = `
+      <button class="success" onclick="move('CARGADA')">Aceptar</button>
+      <button class="warning" onclick="move('OBSERVADA')">Observar</button>
+      <button class="danger" onclick="move('RECHAZADA')">Rechazar</button>
+    `;
+  }
+
+  /* OBSERVADA */
+  else if (currentState === "OBSERVADA") {
+    stateText.innerText = "Estado: OBSERVADA";
+    subtitle.innerText = "La ficha requiere correcciones";
+
+    actions.innerHTML = `
+      <button class="primary" onclick="move('PRECARGA')">Corregir ficha</button>
+    `;
+  }
+
+  /* CARGADA */
+  else if (currentState === "CARGADA") {
+    stateText.innerText = "Estado: CARGADA";
+    subtitle.innerText = "¡Todo OK! Se envió mail de confirmación al prospecto, quien deberá adjuntar el formulario de traspaso SSS mediante el mail";
+
+    actions.innerHTML = `
+      <button class="success" onclick="upload(true)">Adjunta formulario de SSS</button>
+      <button class="warning" onclick="upload(false)">No adjunta formulario</button>
+    `;
+  }
+
+  /* A CONFIRMAR */
+  else if (currentState === "A_CONFIRMAR") {
+    stateText.innerText = "A CONFIRMAR";
+    subtitle.innerText = "Administración hará el control final";
+
+    actions.innerHTML = `
+      <button class="success" onclick="move('IMPORTADA')">Todo correcto</button>
+      <button class="warning" onclick="move('REQUERIDA')">Faltan datos</button>
+    `;
+  }
+
+  /* REQUERIDA */
+  else if (currentState === "REQUERIDA") {
+    stateText.innerText = "Estado: REQUERIDA";
+    subtitle.innerText = "Administración solicitó ajustes";
+
+    actions.innerHTML = `
+      <button class="primary" onclick="move('PRECARGA')">Corregir y reenviar</button>
+    `;
+  }
+
+  /* ESTADOS FINALES */
+  else if (currentState === "IMPORTADA" || currentState === "RECHAZADA") {
+    stateText.innerText = currentState.replace("_", " ");
+    subtitle.innerText = "Estado final del proceso";
+
+    actions.innerHTML = `
+      <button class="secondary" onclick="reset()">Reiniciar</button>
+    `;
+  }
+}
+
+/* Animación */
+function animateChange(newState) {
+  const card = document.getElementById("card");
+
+  card.classList.remove("fade-in");
+  card.classList.add("fade-out");
+
+  setTimeout(() => {
+    currentState = newState;
+    render();
+
+    card.classList.remove("fade-out");
+    card.classList.add("fade-in");
+  }, 250);
+}
+
+/* Navegación */
+function move(state) {
+  animateChange(state);
+}
+
+function validate(ok) {
+  if (ok) {
+    animateChange("CARGADA");
+  } else {
+    animateChange("AUDITORIA");
+  }
+}
+
+function upload(hasPdf) {
+  if (hasPdf) {
+    animateChange("A_CONFIRMAR");
+  } else {
+    animateChange("CARGADA");
+  }
+}
+
+function reset() {
+  animateChange("BIENVENIDA");
+}
+
+/* Init */
+render();
+
+</script>
+
+</body>
+</html>
